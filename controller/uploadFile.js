@@ -1,38 +1,34 @@
-const path = require("path");
 const fs = require("fs");
-const formidable = require("formidable");
+const path = require("path");
 
-const galleryPath = require("../config/paths").galleryPath;
-let tempImgUrl = path.join(galleryPath, "/tmp/temp.png");
+const saveImgTemp = (req, res, next) => {
+  // If necessary, do something whenever a piece of data is received 
+  // const cMax = req.headers['content-length'];
+  // let cReceived = 0;
 
-const saveImgTemp = function (req, res, next) {
-  const form = formidable();
+  return new Promise((resolve, reject) => {
+    const writeStream = fs.createWriteStream(
+      path.join(__dirname, "../store/recognize_me.png")
+    );
+    req.pipe(writeStream);
 
-  form.parse(req, (err, fields, files) => {
-    if (files.img) {
-      let oldpath = files.img.path;
-      let newpath = tempImgUrl;
-      fs.rename(oldpath, newpath, function (err) {
-        res.send({
-          status: 200,
-          statusText: "success",
-          msg: "Fileupload successful!",
-        });
-      });
-    } else if (!files.img) {
-      res.send({
-        status: 304,
-        statusText: "not modified",
-        msg: "No file has been uploaded",
-      });
-    } else {
-      res.send({
-        status: 500,
-        statusText: "error",
-        msg: "File could not be uploaded to the server",
-      });
-    }
-  });
+    // If necessary, do something whenever a piece of data is received 
+    // req.on('data', (chunk) => {
+    //   cReceived += chunk.length;
+    //   console.log(`Received ${Math.round(cReceived / cMax * 100)}% of data.`);
+    // });
+
+    // After all the data is saved, resolve this function
+    req.on('end', () => {
+      resolve()
+    });
+
+    // This is here incase any errors occur
+    writeStream.on('error', function (err) {
+      console.log(err);
+    });
+  })
+
 };
 
 module.exports = saveImgTemp;

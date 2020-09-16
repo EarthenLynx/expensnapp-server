@@ -4,10 +4,9 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-const logger = require("./middleware/logger");
 
 // Initialize the routes and the application
-const routerTodo = require("./routes/api/todo");
+const routerUpload = require("./routes/api/upload");
 const app = express();
 
 // Initialize the middleware
@@ -17,17 +16,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+const PORT = process.env.PORT || 3000
+
 // Uncomment these to set the CORS headers
-// app.use(function (req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 // Configure the routes
-app.use("/todo", routerTodo);
+app.use("/fileupload", routerUpload);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -48,15 +50,8 @@ app.use(function (err, req, res, next) {
 });
 
 // Configure the port. Uses standard node port, alternatively 3000 if not available
-app.set("port", process.env.PORT || 3000);
 
 // Make the app listen to the standard port
-app.listen(app.get("port"), () =>
-  logger.info({
-    level: "info",
-    message: "Started server at "
-      .concat(new Date())
-      .concat(" on port ")
-      .concat(app.get("port")),
-  })
+app.listen(PORT, () =>
+  console.log(`Started server on http://localhost:${PORT}`)
 );
