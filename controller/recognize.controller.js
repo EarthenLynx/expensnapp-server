@@ -15,8 +15,9 @@ const tRecognize = async (filepath) => {
     tessedit_char_whitelist: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäüö ",
   });
   const { data: { text } } = await worker.recognize(img);
-  console.log(text);
   await worker.terminate();
+
+  return text;
 }
 
 module.exports = { tRecognize }; 

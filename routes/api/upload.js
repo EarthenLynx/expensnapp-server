@@ -6,8 +6,8 @@ const uploadFile = require("../../controller/uploadFile")
 var router = express.Router();
 
 // Post a new recipe when receiving a post - request
-router.post("/", function (req, res, next) {
-  uploadFile(req, res).then(imgPath => res.send({msg: `Image uploaded to ${imgPath}`}));
+router.post("/", (req, res, next) => {
+  uploadFile(req, res).then(text => res.status(200).send({msg: "Success", value: text}));
 });
 
 module.exports = router;
