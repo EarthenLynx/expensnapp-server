@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const {tRecognize} = require("./recignize.controller");
 
 const saveImgTemp = (req, res, next) => {
   // If necessary, do something whenever a piece of data is received 
@@ -7,9 +8,10 @@ const saveImgTemp = (req, res, next) => {
   // let cReceived = 0;
 
   return new Promise((resolve, reject) => {
-    const writeStream = fs.createWriteStream(
-      path.join(__dirname, "../store/recognize_me.png")
-    );
+    const type = req.headers['content-type'].split("/")[1]
+    const imgPath = path.join(__dirname, "../store/recognize_me.".concat(type))
+
+    const writeStream = fs.createWriteStream(imgPath);
     req.pipe(writeStream);
 
     // If necessary, do something whenever a piece of data is received 
@@ -20,12 +22,13 @@ const saveImgTemp = (req, res, next) => {
 
     // After all the data is saved, resolve this function
     req.on('end', () => {
-      resolve()
+      tRecognize(imgPath);
+      resolve(imgPath)
     });
 
     // This is here incase any errors occur
-    writeStream.on('error', function (err) {
-      console.log(err);
+    writeStream.on('error',  (err) => {
+      reject(err)
     });
   })
 

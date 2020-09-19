@@ -7,7 +7,7 @@ var router = express.Router();
 
 // Post a new recipe when receiving a post - request
 router.post("/", function (req, res, next) {
-  uploadFile(req, res);
+  uploadFile(req, res).then(imgPath => res.send({msg: `Image uploaded to ${imgPath}`}));
 });
 
 module.exports = router;

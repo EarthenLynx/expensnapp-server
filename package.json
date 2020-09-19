@@ -1,6 +1,6 @@
 {
-  "name": "masterchef",
-  "version": "0.0.0",
+  "name": "expensnap-server",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js",
@@ -11,14 +11,10 @@
     "crypto-random-string": "^3.2.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "express-fileupload": "^1.2.0",
-    "express-handlebars": "^4.0.3",
-    "formidable": "^1.2.2",
     "http-errors": "~1.6.3",
-    "mongoose": "^5.9.7",
     "morgan": "~1.9.1",
-    "multer": "^1.4.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1", 
+    "tesseract.js": "^2.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"

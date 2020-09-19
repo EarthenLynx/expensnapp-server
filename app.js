@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
 });
 
 // Configure the routes
-app.use("/fileupload", routerUpload);
+app.use("/upload", routerUpload);
 
 
 // catch 404 and forward to error handler
